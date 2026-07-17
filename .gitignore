@@ -1,0 +1,10 @@
+.env
+.opencode/node_modules/
+.pytest_cache/
+.superpowers/
+.venv/
+__pycache__/
+*.py[cod]
+data/
+test-results/
+playwright-report/
