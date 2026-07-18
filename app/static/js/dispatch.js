@@ -166,6 +166,9 @@ class DispatchController {
         msg,
         result.outcome === "success" ? "success" : "error"
       );
+      document.dispatchEvent(new CustomEvent("dfr:dispatch", {
+        detail: { incident_id: result.incident_id, lat, lon },
+      }));
     } catch (err) {
       if (err.message === "timeout") {
         this._showStatus(

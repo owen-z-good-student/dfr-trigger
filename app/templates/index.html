@@ -68,7 +68,7 @@
               <button type="button" id="geocode-btn" class="btn-secondary btn-small" data-i18n="dispatch.geocode">Geocode</button>
         </div>
         <div class="field-group">
-          <label for="incident-type">Incident Type</label>
+          <label for="incident-type" data-i18n="dispatch.incident_type">Incident Type</label>
           <select id="incident-type" name="incident_type">
             <option value="">— select —</option>
             <option value="Security Alarm">Security Alarm</option>
@@ -81,12 +81,12 @@
           </select>
         </div>
         <div class="field-group" id="custom-incident-type-group" hidden>
-          <label for="custom-incident-type">Custom Incident Type</label>
+          <label for="custom-incident-type" data-i18n="dispatch.custom_incident_type">Custom Incident Type</label>
           <input id="custom-incident-type" name="custom_incident_type" type="text"
-                 maxlength="80" placeholder="Describe incident type" />
+                 maxlength="80" data-i18n-placeholder="dispatch.placeholder_desc" placeholder="Describe incident type" />
         </div>
         <div class="field-group">
-          <label for="priority">Priority <span class="req">*</span></label>
+          <label for="priority"><span data-i18n="dispatch.priority">Priority</span> <span class="req">*</span></label>
           <select id="priority" name="priority" required>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -96,19 +96,19 @@
           </select>
         </div>
         <div class="field-group">
-          <label for="operator-name">Operator Name</label>
+          <label for="operator-name" data-i18n="dispatch.operator_name">Operator Name</label>
           <input id="operator-name" name="operator_name" type="text" maxlength="120" />
         </div>
         <div class="field-group">
-          <label for="caller-phone">Caller Phone</label>
+          <label for="caller-phone" data-i18n="dispatch.caller_phone">Caller Phone</label>
           <input id="caller-phone" name="caller_phone" type="tel" maxlength="40" />
         </div>
         <div class="field-group">
-          <label for="description">Description</label>
+          <label for="description" data-i18n="dispatch.description">Description</label>
           <textarea id="description" name="description" maxlength="2000" rows="3"></textarea>
         </div>
         <div id="dispatch-status" class="status-msg" aria-live="assertive" hidden></div>
-        <button type="submit" id="dispatch-btn" class="btn-primary">Dispatch</button>
+        <button type="submit" id="dispatch-btn" class="btn-primary" data-i18n="dispatch.dispatch">Dispatch</button>
       </form>
     </div>
   </template>
@@ -118,51 +118,51 @@
       <h2 class="panel-title">Config</h2>
       <form id="config-form" autocomplete="off" novalidate>
         <div class="field-group">
-          <label>Token Status</label>
-          <span id="token-status" class="config-status">Not configured</span>
+          <label data-i18n="config.token_status">Token Status</label>
+          <span id="token-status" class="config-status" data-i18n="config.not_configured">Not configured</span>
         </div>
         <div class="field-group">
-          <label for="user-token">User Token</label>
+          <label for="user-token" data-i18n="config.user_token">User Token</label>
           <input id="user-token" name="user_token" type="password"
-                 maxlength="4096" placeholder="Paste new token to replace" autocomplete="new-password" />
+                 maxlength="4096" data-i18n-placeholder="config.placeholder_token" placeholder="Paste new token to replace" autocomplete="new-password" />
         </div>
         <div class="field-group">
-          <label for="config-region">Region</label>
+          <label for="config-region" data-i18n="config.region">Region</label>
           <select id="config-region" name="region">
             <option value="global">Global</option>
             <option value="eu" selected>Europe</option>
           </select>
         </div>
         <div class="field-group">
-          <label for="project-uuid">Project UUID</label>
+          <label for="project-uuid" data-i18n="config.project_uuid">Project UUID</label>
           <input id="project-uuid" name="project_uuid" type="text"
-                 minlength="6" maxlength="128" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
+                 minlength="6" maxlength="128" data-i18n-placeholder="config.placeholder_project" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
         </div>
         <div class="field-group">
-          <label for="workflow-uuid">Workflow UUID</label>
+          <label for="workflow-uuid" data-i18n="config.workflow_uuid">Workflow UUID</label>
           <input id="workflow-uuid" name="workflow_uuid" type="text"
-                 minlength="6" maxlength="128" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
+                 minlength="6" maxlength="128" data-i18n-placeholder="config.placeholder_project" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
         </div>
         <div class="field-group">
-          <label>Default Map Center</label>
+          <label data-i18n="config.default_center">Default Map Center</label>
           <div class="config-center-row">
-            <span id="default-center-display">Not set</span>
-            <button type="button" id="set-default-center-btn" class="btn-secondary" disabled>Set</button>
+            <span id="default-center-display" data-i18n="config.not_set">Not set</span>
+            <button type="button" id="set-default-center-btn" class="btn-secondary" disabled data-i18n="config.set">Set</button>
           </div>
         </div>
         <div class="field-group">
-          <label>Brand Logo</label>
+          <label data-i18n="config.brand_logo">Brand Logo</label>
           <div class="logo-upload-row">
             <input type="file" id="logo-upload" accept="image/png" hidden />
-            <span id="logo-status">No logo</span>
-            <button type="button" id="logo-upload-btn" class="btn-secondary">Upload</button>
-            <button type="button" id="logo-remove-btn" class="btn-secondary" hidden>Remove</button>
+            <span id="logo-status" data-i18n="config.no_logo">No logo</span>
+            <button type="button" id="logo-upload-btn" class="btn-secondary" data-i18n="config.upload">Upload</button>
+            <button type="button" id="logo-remove-btn" class="btn-secondary" hidden data-i18n="config.remove">Remove</button>
           </div>
         </div>
         <div id="config-status-msg" class="status-msg" aria-live="assertive" hidden></div>
         <div class="btn-row">
-          <button type="submit" class="btn-primary">Save</button>
-          <button type="button" id="test-config-btn" class="btn-secondary">Test</button>
+          <button type="submit" class="btn-primary" data-i18n="config.save">Save</button>
+          <button type="button" id="test-config-btn" class="btn-secondary" data-i18n="config.test">Test</button>
         </div>
       </form>
     </div>
@@ -170,11 +170,11 @@
 
   <template id="tpl-logs">
     <div class="panel-inner">
-      <h2 class="panel-title">Log</h2>
+      <h2 class="panel-title" data-i18n="logs.title">Log</h2>
       <div class="log-filters">
-        <input id="log-search" type="search" placeholder="Search…" />
+        <input id="log-search" type="search" data-i18n-placeholder="logs.search" placeholder="Search…" />
         <select id="log-priority-filter">
-          <option value="">All priorities</option>
+          <option value="" data-i18n="logs.all_priorities">All priorities</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -182,12 +182,12 @@
           <option value="5">5</option>
         </select>
         <select id="log-outcome-filter">
-          <option value="">All outcomes</option>
+          <option value="" data-i18n="logs.all_outcomes">All outcomes</option>
           <option value="success">Success</option>
           <option value="failure">Failure</option>
           <option value="indeterminate">Indeterminate</option>
         </select>
-        <button type="button" id="log-refresh-btn" class="btn-secondary btn-small">Refresh</button>
+        <button type="button" id="log-refresh-btn" class="btn-secondary btn-small" data-i18n="logs.refresh">Refresh</button>
       </div>
       <div id="log-list" class="log-list" aria-live="polite"></div>
     </div>
@@ -210,6 +210,7 @@
   <script src="/static/js/configuration.js?v=2"></script>
   <script src="/static/js/logs.js?v=2"></script>
   <script src="/static/js/live.js?v=2"></script>
+  <script src="/static/js/task-progress.js?v=2"></script>
   <script src="/static/js/main.js?v=2"></script>
 </body>
 </html>

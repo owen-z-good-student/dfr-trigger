@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.configurationController = new ConfigurationController();
   window.logsController = new LogsController();
   window.liveController = new LiveController();
+  window.taskProgressController = new TaskProgressController();
+  window.taskProgressController.attach();
   window.mapController = new MapController();
   window.navigationController = new NavigationController();
   if (window.lucide) window.lucide.createIcons({ attrs: { "stroke-width": 2 } });

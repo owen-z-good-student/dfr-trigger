@@ -531,3 +531,42 @@ body[data-nav-expanded="true"] #map {
     left: var(--rail-collapsed) !important;
   }
 }
+
+.task-progress-panel {
+  position: fixed;
+  right: 16px;
+  top: 48px;
+  width: 250px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  z-index: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.task-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #2a2a2a;
+}
+.task-progress-title { font-size: 12px; font-weight: 600; color: #fff; }
+.task-progress-close { background: none; border: none; color: #666; cursor: pointer; font-size: 16px; padding: 0 4px; }
+.task-progress-content { padding: 10px 12px; }
+.task-battery { font-size: 13px; font-weight: 600; color: #5ae0a0; margin-bottom: 10px; }
+.task-steps { display: flex; flex-direction: column; gap: 0; }
+.task-step { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 11px; }
+.task-step-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+.task-step-label { flex: 1; }
+.task-step-done .task-step-icon { color: #5ae0a0; }
+.task-step-done .task-step-label { color: #5ae0a0; }
+.task-step-current .task-step-icon { color: #2f73d9; animation: pulse 1.5s infinite; }
+.task-step-current .task-step-label { color: #fff; }
+.task-step-pending .task-step-icon { color: #444; }
+.task-step-pending .task-step-label { color: #555; }
+.task-step-line { width: 2px; height: 12px; background: #333; margin-left: 8px; }
+.task-step-line-done { background: #5ae0a0; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.mission-line { stroke-dasharray: 8 6; animation: dash 0.8s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -14; } }
+.drone-marker-icon { background: transparent !important; border: none !important; }

@@ -129,4 +129,31 @@ class MapController {
   invalidateSize() {
     if (this._map) this._map.invalidateSize({ animate: false });
   }
+
+  drawMissionLine(targetLat, targetLon) {
+    this.clearMissionLine();
+    const home = this._lastCoords;
+    if (!home) return;
+    this._missionLine = L.polyline([[home.lat, home.lon], [targetLat, targetLon]], {
+      color: "#2f73d9", weight: 2, dashArray: "8 6", className: "mission-line",
+    }).addTo(this._map);
+  }
+
+  clearMissionLine() {
+    if (this._missionLine) { this._map.removeLayer(this._missionLine); this._missionLine = null; }
+    if (this._droneMarker) { this._map.removeLayer(this._droneMarker); this._droneMarker = null; }
+  }
+
+  updateDroneMarker(lat, lon) {
+    if (this._droneMarker) {
+      this._droneMarker.setLatLng([lat, lon]);
+    } else {
+      const icon = L.divIcon({
+        className: "drone-marker-icon",
+        html: '<svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#2f73d9\" fill-opacity=\"0.3\" stroke=\"#2f73d9\" stroke-width=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"4\" fill=\"#2f73d9\"/></svg>',
+        iconSize: [28, 28], iconAnchor: [14, 14],
+      });
+      this._droneMarker = L.marker([lat, lon], { icon, zIndexOffset: 2000 }).addTo(this._map);
+    }
+  }
 }
