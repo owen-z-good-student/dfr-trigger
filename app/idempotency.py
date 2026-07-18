@@ -2,7 +2,7 @@ import json
 import secrets
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Literal
+from typing import Optional,  Literal
 
 from app.db import Database
 from app.redaction import sanitize
@@ -23,8 +23,8 @@ RESULT_MAX_BYTES = 65_536
 @dataclass(frozen=True)
 class Reservation:
     state: ReservationState
-    result: dict | None = None
-    generation: str | None = None
+    result: Optional[dict] = None
+    generation: Optional[str] = None
 
 
 def _utc_now() -> datetime:

@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Optional,  Annotated
 
 from fastapi import APIRouter, Header, HTTPException, Query, Request
 
@@ -75,11 +75,11 @@ async def dispatch(
 @router.get("/logs")
 def logs(
     request: Request,
-    query: str | None = None,
-    priority: int | None = Query(default=None, ge=1, le=5),
-    outcome: str | None = None,
+    query: Optional[str] = None,
+    priority: Optional[int] = Query(default=None, ge=1, le=5),
+    outcome: Optional[str] = None,
     limit: int = Query(default=50, ge=1, le=100),
-    cursor: str | None = None,
+    cursor: Optional[str] = None,
 ) -> dict:
     trusted_actor(request)
     try:

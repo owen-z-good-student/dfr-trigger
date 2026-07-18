@@ -1,3 +1,4 @@
+from typing import Optional
 import asyncio
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
@@ -24,7 +25,7 @@ _STATIC_DIR = Path(__file__).parent / "static"
 _TEMPLATES_DIR = Path(__file__).parent / "templates"
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
+def create_app(settings: Optional[Settings] = None) -> FastAPI:
     runtime = settings or get_settings()
 
     @asynccontextmanager
@@ -124,7 +125,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             response.headers["Content-Security-Policy"] = (
                 "default-src 'self'; script-src 'self'; style-src 'self'; "
                 "img-src 'self' https://tile.openstreetmap.org data:; "
-                "connect-src 'self'; object-src 'none'; frame-ancestors 'none'; "
+                "connect-src 'self'; object-src 'none'; frame-ancestors 'self'; "
                 "base-uri 'none'; form-action 'self'"
             )
             response.headers["X-Content-Type-Options"] = "nosniff"
@@ -154,6 +155,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return templates.TemplateResponse(
             request,
             "index.html",
+            {"mode": runtime.mode},
+        )
+
+    @app.get("/phone", response_class=HTMLResponse)
+    def phone(request: Request):
+        return templates.TemplateResponse(
+            request,
+            "phone.html",
             {"mode": runtime.mode},
         )
 

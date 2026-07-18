@@ -1,3 +1,4 @@
+from typing import Optional
 import hashlib
 import hmac
 import ipaddress
@@ -22,7 +23,7 @@ def _constant_time_ascii_equal(left: str, right: str) -> bool:
         return False
 
 
-def create_csrf_token(secret: str, now: int | None = None) -> str:
+def create_csrf_token(secret: str, now: Optional[int] = None) -> str:
     issued = int(time.time()) if now is None else now
     nonce = secrets.token_urlsafe(24)
     body = f"{issued}.{nonce}"
@@ -30,7 +31,7 @@ def create_csrf_token(secret: str, now: int | None = None) -> str:
     return f"{body}.{signature}"
 
 
-def verify_csrf_token(token: str, secret: str, now: int | None = None) -> bool:
+def verify_csrf_token(token: str, secret: str, now: Optional[int] = None) -> bool:
     try:
         issued_text, nonce, signature = token.split(".", 2)
         issued = int(issued_text)
@@ -50,7 +51,7 @@ def issue_csrf_token(request: Request) -> str:
     return create_csrf_token(request.app.state.settings.csrf_secret)
 
 
-def _split_url(value: str) -> SplitResult | None:
+def _split_url(value: str) -> Optional[SplitResult]:
     try:
         parsed = urlsplit(value)
         port = parsed.port
@@ -68,7 +69,7 @@ def _split_url(value: str) -> SplitResult | None:
     return parsed
 
 
-def _origin(value: str, *, origin_header: bool) -> tuple[str, str, int] | None:
+def _origin(value: str, *, origin_header: bool) -> Optional[tuple[str, str, int]]:
     parsed = _split_url(value)
     if parsed is None or parsed.fragment:
         return None
@@ -78,7 +79,7 @@ def _origin(value: str, *, origin_header: bool) -> tuple[str, str, int] | None:
     return parsed.scheme.lower(), parsed.hostname.lower(), port
 
 
-def require_state_change(request: Request, *, now: int | None = None) -> None:
+def require_state_change(request: Request, *, now: Optional[int] = None) -> None:
     settings = request.app.state.settings
     public_origin = _origin(settings.public_origin, origin_header=True)
     if public_origin is None:

@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from typing import Optional
 
 from app.crypto import ValueCipher
 from app.db import Database
@@ -39,7 +40,7 @@ class ConfigStore:
             connection.commit()
         return self.status()
 
-    def load(self) -> StoredFH2Config | None:
+    def load(self) -> Optional[StoredFH2Config]:
         with self.database.connect() as connection:
             row = connection.execute(
                 "SELECT * FROM fh2_config WHERE id=1"

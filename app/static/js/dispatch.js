@@ -67,13 +67,31 @@ class DispatchController {
       dispatchBtn.disabled = true;
     }
 
-    // Listen for map coordinate events
+    // Listen for map coordinate events (map click → inputs)
     document.addEventListener("dfr:coordinates", (evt) => {
       const latEl = document.getElementById("latitude");
       const lonEl = document.getElementById("longitude");
       if (latEl) latEl.value = evt.detail.lat;
       if (lonEl) lonEl.value = evt.detail.lon;
     });
+
+    // Listen for manual coordinate input (inputs → map marker)
+    const syncMapFromInputs = () => {
+      const latEl = document.getElementById("latitude");
+      const lonEl = document.getElementById("longitude");
+      const latRaw = (latEl ? latEl.value : "").replace(",", ".").replace(/[^0-9.\-]/g, "");
+      const lonRaw = (lonEl ? lonEl.value : "").replace(",", ".").replace(/[^0-9.\-]/g, "");
+      const lat = parseFloat(latRaw);
+      let lon = parseFloat(lonRaw);
+      if (lon > 180) lon = lon - 360;
+      if (!isNaN(lat) && !isNaN(lon) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+        if (window.mapController) {
+          window.mapController.placeMarker(lat, lon);
+        }
+      }
+    };
+    document.getElementById("latitude")?.addEventListener("change", syncMapFromInputs);
+    document.getElementById("longitude")?.addEventListener("change", syncMapFromInputs);
   }
 
   async _dispatch(form, btn, statusEl) {
@@ -82,9 +100,21 @@ class DispatchController {
     btn.disabled = true;
     this._showStatus(statusEl, "", "");
 
-    // Build payload
-    const lat = parseFloat(document.getElementById("latitude").value);
-    const lon = parseFloat(document.getElementById("longitude").value);
+    // Build payload (accept both . and , as decimal, strip non-numeric chars)
+    const latRaw = (document.getElementById("latitude").value || "")
+      .replace(",", ".").replace(/[^0-9.\-]/g, "");
+    const lonRaw = (document.getElementById("longitude").value || "")
+      .replace(",", ".").replace(/[^0-9.\-]/g, "");
+    const lat = parseFloat(latRaw);
+    let lon = parseFloat(lonRaw);
+    if (lon > 180) lon = lon - 360;  // FH2 uses 0-360, convert to -180..180
+    if (isNaN(lat) || isNaN(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+      this._showStatus(statusEl, "Invalid coordinates — enter valid lat/lon first", "error");
+      this._inFlight = false;
+      btn.textContent = "Dispatch";
+      btn.disabled = false;
+      return;
+    }
     const incidentType = document.getElementById("incident-type").value || null;
     const customIncidentType =
       incidentType === "Other"

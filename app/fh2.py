@@ -1,3 +1,4 @@
+from typing import Optional
 import httpx
 import json
 
@@ -14,7 +15,7 @@ MAX_RESPONSE_BYTES = 65_536
 TRUNCATION_MARKER = "\n[TRUNCATED]"
 
 
-def _description_line(label: str, value: str | None) -> str | None:
+def _description_line(label: str, value: Optional[str]) -> Optional[str]:
     if value is None or not value.strip():
         return None
     return f"{label}: {value}"
@@ -55,7 +56,7 @@ def build_fh2_payload(
     }
 
 
-def _response_body(content: bytes, truncated: bool) -> object | None:
+def _response_body(content: bytes, truncated: bool) -> Optional[object]:
     if truncated:
         return content.decode("utf-8", errors="replace") + TRUNCATION_MARKER
     try:

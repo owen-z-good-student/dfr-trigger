@@ -1,3 +1,4 @@
+from typing import Optional
 import base64
 import json
 import uuid
@@ -24,7 +25,7 @@ def _as_dict(value: object) -> dict:
     raise TypeError("audit value must be a dictionary or Pydantic model")
 
 
-def _sanitized_text(value: object, sensitive_values: tuple[str, ...]) -> str | None:
+def _sanitized_text(value: object, sensitive_values: tuple[str, ...]) -> Optional[str]:
     if value is None:
         return None
     return str(sanitize(str(value), sensitive_values))
@@ -156,11 +157,11 @@ class AuditStore:
 
     def list(
         self,
-        query: str | None = None,
-        priority: int | None = None,
-        outcome: str | None = None,
+        query: Optional[str] = None,
+        priority: Optional[int] = None,
+        outcome: Optional[str] = None,
         limit: int = 50,
-        cursor: str | None = None,
+        cursor: Optional[str] = None,
     ) -> dict:
         if not 1 <= limit <= 100:
             raise ValueError("limit must be between 1 and 100")

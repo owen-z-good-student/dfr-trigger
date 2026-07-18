@@ -16,23 +16,27 @@
 </head>
 <body data-nav-expanded="false">
 
-  {% if mode == "mock" %}
-  <div id="mock-badge" aria-label="Mock mode active">MOCK MODE</div>
-  {% endif %}
+  <div id="topbar">
+    <span id="topbar-label" data-i18n="topbar.mode">MOCK MODE</span>
+    <div id="lang-selector"></div>
+  </div>
 
   <aside id="nav-rail" aria-label="Primary navigation">
     <button id="nav-toggle" aria-label="Expand navigation" aria-expanded="false">
       <i data-lucide="menu"></i>
     </button>
     <div id="nav-logo" aria-label="Brand logo" hidden></div>
-    <button class="nav-item is-active" data-module="dispatch" aria-label="Open Dispatch panel">
-      <i data-lucide="drone"></i><span>Dispatch</span>
+    <button class="nav-item is-active" data-module="dispatch" data-i18n-aria="nav.dispatch" aria-label="Open Dispatch panel">
+      <i data-lucide="drone"></i><span data-i18n="nav.dispatch">Dispatch</span>
     </button>
-    <button class="nav-item" data-module="configuration" aria-label="Open Configuration panel">
-      <i data-lucide="wrench"></i><span>Configuration</span>
+    <button class="nav-item" data-module="configuration" data-i18n-aria="nav.config" aria-label="Open Config panel">
+      <i data-lucide="wrench"></i><span data-i18n="nav.config">Config</span>
     </button>
-    <button class="nav-item" data-module="logs" aria-label="Open Log panel">
-      <i data-lucide="book-open"></i><span>Log</span>
+    <button class="nav-item" data-module="logs" data-i18n-aria="nav.logs" aria-label="Open Log panel">
+      <i data-lucide="book-open"></i><span data-i18n="nav.logs">Log</span>
+    </button>
+    <button class="nav-item" data-module="live" data-i18n-aria="nav.live" aria-label="Open Live panel">
+      <i data-lucide="video"></i><span data-i18n="nav.live">Live</span>
     </button>
   </aside>
 
@@ -45,23 +49,23 @@
   <!-- Panel templates -->
   <template id="tpl-dispatch">
     <div class="panel-inner">
-      <h2 class="panel-title">Dispatch</h2>
-      <form id="dispatch-form" autocomplete="off" novalidate>
-        <div class="field-group">
-          <label for="latitude">Latitude <span class="req">*</span></label>
-          <input id="latitude" name="latitude" type="number" step="any"
-                 min="-90" max="90" required placeholder="Click map or enter" />
-        </div>
-        <div class="field-group">
-          <label for="longitude">Longitude <span class="req">*</span></label>
-          <input id="longitude" name="longitude" type="number" step="any"
-                 min="-180" max="180" required placeholder="Click map or enter" />
-        </div>
-        <div class="field-group">
-          <label for="location">Location</label>
-          <input id="location" name="location" type="text" maxlength="300"
-                 placeholder="Address or description" />
-          <button type="button" id="geocode-btn" class="btn-secondary btn-small">Geocode</button>
+<h2 class="panel-title" data-i18n="dispatch.title">Dispatch</h2>
+          <form id="dispatch-form" autocomplete="off" novalidate>
+            <div class="field-group">
+              <label for="latitude"><span data-i18n="dispatch.latitude">Latitude</span> <span class="req">*</span></label>
+              <input id="latitude" name="latitude" type="text" inputmode="decimal"
+                     data-i18n-placeholder="dispatch.placeholder_lat" placeholder="e.g. -23.5505" />
+            </div>
+            <div class="field-group">
+              <label for="longitude"><span data-i18n="dispatch.longitude">Longitude</span> <span class="req">*</span></label>
+              <input id="longitude" name="longitude" type="text" inputmode="decimal"
+                     data-i18n-placeholder="dispatch.placeholder_lon" placeholder="e.g. -46.6333" />
+            </div>
+            <div class="field-group">
+              <label for="location" data-i18n="dispatch.location">Location</label>
+              <input id="location" name="location" type="text" maxlength="300"
+                     data-i18n-placeholder="dispatch.placeholder_loc" placeholder="Address or description" />
+              <button type="button" id="geocode-btn" class="btn-secondary btn-small" data-i18n="dispatch.geocode">Geocode</button>
         </div>
         <div class="field-group">
           <label for="incident-type">Incident Type</label>
@@ -111,7 +115,7 @@
 
   <template id="tpl-configuration">
     <div class="panel-inner">
-      <h2 class="panel-title">Configuration</h2>
+      <h2 class="panel-title">Config</h2>
       <form id="config-form" autocomplete="off" novalidate>
         <div class="field-group">
           <label>Token Status</label>
@@ -189,12 +193,13 @@
     </div>
   </template>
 
-  <script src="/static/js/api.js"></script>
-  <script src="/static/js/navigation.js"></script>
-  <script src="/static/js/map.js"></script>
-  <script src="/static/js/dispatch.js"></script>
-  <script src="/static/js/configuration.js"></script>
-  <script src="/static/js/logs.js"></script>
-  <script src="/static/js/main.js"></script>
+  <script src="/static/js/i18n.js?v=2"></script>
+  <script src="/static/js/api.js?v=2"></script>
+  <script src="/static/js/navigation.js?v=2"></script>
+  <script src="/static/js/map.js?v=2"></script>
+  <script src="/static/js/dispatch.js?v=2"></script>
+  <script src="/static/js/configuration.js?v=2"></script>
+  <script src="/static/js/logs.js?v=2"></script>
+  <script src="/static/js/main.js?v=2"></script>
 </body>
 </html>

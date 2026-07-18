@@ -1,3 +1,4 @@
+from typing import Optional
 import asyncio
 import hashlib
 import json
@@ -33,12 +34,12 @@ def _fingerprint(request: DispatchRequest) -> str:
 class DispatchService:
     def __init__(
         self,
-        config_store: ConfigStore | None,
+        config_store: Optional[ConfigStore],
         audit_store: AuditStore,
         idempotency_store: IdempotencyStore,
         limiter: SlidingWindowLimiter,
         settings: Settings,
-        fh2_client_factory: ClientFactory | None = None,
+        fh2_client_factory: Optional[ClientFactory] = None,
     ):
         if settings.dispatch_concurrency_per_project <= 0:
             raise ValueError("project dispatch concurrency must be positive")

@@ -1,6 +1,7 @@
 """Fixed-host Nominatim geocoding with bounded, instance-local state."""
 
 from __future__ import annotations
+from typing import Optional
 
 import asyncio
 import json
@@ -34,17 +35,17 @@ class Geocoder:
         self._timeout = timeout_seconds
         self._min_interval = min_interval_seconds
         self._max_response_bytes = max_response_bytes
-        self._cache: dict[str, tuple[GeocodeResult | None, float]] = {}
+        self._cache: dict[str, tuple[Optional[GeocodeResult], float]] = {}
         self._request_lock = asyncio.Lock()
         self._last_request = 0.0
 
-    def _cached(self, key: str) -> GeocodeResult | None | object:
+    def _cached(self, key: str) -> Optional[GeocodeResult]:
         cached = self._cache.get(key)
         if cached is None or time.monotonic() >= cached[1]:
             return _CACHE_MISS
         return cached[0]
 
-    async def search(self, query: str) -> GeocodeResult | None:
+    async def search(self, query: str) -> Optional[GeocodeResult]:
         if not query or not query.strip():
             raise ValueError("query is required")
         clean_query = query.strip()

@@ -9,14 +9,15 @@ class MapController {
   constructor() {
     this._map = null;
     this._marker = null;
+    this._homeMarker = null;
     this._lastCoords = null;
     this._init();
   }
 
   _init() {
-    // Read default center from localStorage
     let center = [48.8566, 2.3522];
     let zoom = 5;
+    let homeCoords = null;
     try {
       const stored = localStorage.getItem(DEFAULT_CENTER_KEY);
       if (stored) {
@@ -24,6 +25,7 @@ class MapController {
         if (Array.isArray(parsed) && parsed.length === 2) {
           center = parsed;
           zoom = 12;
+          homeCoords = parsed;
         }
       }
     } catch (_) { /* ignore */ }
@@ -41,11 +43,37 @@ class MapController {
       crossOrigin: "anonymous",
     }).addTo(this._map);
 
+    if (homeCoords) {
+      this._addHomeMarker(homeCoords[0], homeCoords[1]);
+    }
+
     this._map.on("click", (e) => {
-      const lat = Math.round(e.latlng.lat * 1e6) / 1e6;
-      const lon = Math.round(e.latlng.lng * 1e6) / 1e6;
+      let lat = Math.round(e.latlng.lat * 1e6) / 1e6;
+      let lon = Math.round(e.latlng.lng * 1e6) / 1e6;
+      lat = Math.max(-90, Math.min(90, lat));
+      lon = ((lon + 540) % 360) - 180;
+      lon = Math.round(lon * 1e6) / 1e6;
       this._lastCoords = { lat, lon };
       this.setCoordinates(lat, lon);
+    });
+  }
+
+  _addHomeMarker(lat, lon) {
+    if (this._homeMarker) {
+      this._map.removeLayer(this._homeMarker);
+    }
+    const icon = L.divIcon({
+      className: "home-marker-icon",
+      html: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#2f73d9" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="#fff"/></svg>',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+    });
+    this._homeMarker = L.marker([lat, lon], { icon, zIndexOffset: 1000 }).addTo(this._map);
+    this._homeMarker.bindTooltip("Default Center", {
+      permanent: true,
+      direction: "top",
+      offset: [0, -16],
+      className: "home-marker-tooltip",
     });
   }
 
@@ -55,18 +83,34 @@ class MapController {
     if (latEl) latEl.value = lat;
     if (lonEl) lonEl.value = lon;
 
-    // Place or move single marker
-    if (this._marker) {
-      this._marker.setLatLng([lat, lon]);
-    } else {
-      this._marker = L.marker([lat, lon]).addTo(this._map);
-    }
+    this.placeMarker(lat, lon);
 
     this._lastCoords = { lat, lon };
 
     document.dispatchEvent(
       new CustomEvent("dfr:coordinates", { detail: { lat, lon } })
     );
+  }
+
+  placeMarker(lat, lon) {
+    if (this._marker) {
+      this._marker.setLatLng([lat, lon]);
+    } else {
+      this._marker = L.marker([lat, lon]).addTo(this._map);
+    }
+    this._map.setView([lat, lon], this._map.getZoom() < 12 ? 12 : this._map.getZoom());
+    this._ensureHomeMarker();
+  }
+
+  _ensureHomeMarker() {
+    try {
+      const stored = localStorage.getItem(DEFAULT_CENTER_KEY);
+      if (!stored) return;
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length === 2) {
+        this._addHomeMarker(parsed[0], parsed[1]);
+      }
+    } catch (_) { /* ignore */ }
   }
 
   /** Returns the last clicked coordinates, or null */
@@ -79,6 +123,7 @@ class MapController {
     try {
       localStorage.setItem(DEFAULT_CENTER_KEY, JSON.stringify([lat, lon]));
     } catch (_) { /* ignore quota errors */ }
+    this._addHomeMarker(lat, lon);
   }
 
   invalidateSize() {

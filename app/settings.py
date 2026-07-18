@@ -1,6 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
+from typing import Optional,  Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -12,9 +12,9 @@ class Settings(BaseSettings):
     data_dir: Path = Field(default=Path("data"), validation_alias="DFR_DATA_DIR")
     live_dispatch_enabled: bool = False
     fh2_contract_verified: bool = False
-    dfr_config_key: str | None = None
+    dfr_config_key: Optional[str] = None
     csrf_secret: str = "mock-only-change-before-live"
-    trusted_identity_header: str | None = None
+    trusted_identity_header: Optional[str] = None
     trusted_proxy_cidrs: str = ""
     public_origin: str = "http://testserver"
     fh2_timeout_seconds: float = 10.0

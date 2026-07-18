@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Optional,  Literal
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -13,7 +13,7 @@ class ConfigWrite(BaseModel):
     user_token: str = Field(min_length=8, max_length=4096)
     project_uuid: str = Field(min_length=6, max_length=128)
     workflow_uuid: str = Field(min_length=6, max_length=128)
-    creator_id: str | None = Field(default=None, max_length=128)
+    creator_id: Optional[str] = Field(default=None, max_length=128)
 
 
 class StoredFH2Config(ConfigWrite):
@@ -21,11 +21,11 @@ class StoredFH2Config(ConfigWrite):
 
 
 class ConfigStatus(BaseModel):
-    region: Region | None = None
+    region: Optional[Region] = None
     token_configured: bool = False
-    project_uuid_suffix: str | None = None
-    workflow_uuid_suffix: str | None = None
-    creator_id_suffix: str | None = None
+    project_uuid_suffix: Optional[str] = None
+    workflow_uuid_suffix: Optional[str] = None
+    creator_id_suffix: Optional[str] = None
 
 
 IncidentType = Literal[
@@ -46,12 +46,12 @@ class DispatchRequest(BaseModel):
     latitude: float = Field(ge=-90, le=90)
     longitude: float = Field(ge=-180, le=180)
     priority: int = Field(default=5, ge=1, le=5)
-    incident_type: IncidentType | None = None
-    custom_incident_type: str | None = Field(default=None, max_length=80)
-    description: str | None = Field(default=None, max_length=2000)
-    location: str | None = Field(default=None, max_length=300)
-    operator_name: str | None = Field(default=None, max_length=120)
-    caller_phone: str | None = Field(default=None, max_length=40)
+    incident_type: Optional[IncidentType] = None
+    custom_incident_type: Optional[str] = Field(default=None, max_length=80)
+    description: Optional[str] = Field(default=None, max_length=2000)
+    location: Optional[str] = Field(default=None, max_length=300)
+    operator_name: Optional[str] = Field(default=None, max_length=120)
+    caller_phone: Optional[str] = Field(default=None, max_length=40)
 
     @model_validator(mode="after")
     def validate_other(self):
@@ -64,9 +64,9 @@ class DispatchRequest(BaseModel):
 
 class FH2Response(BaseModel):
     outcome: Literal["success", "failure", "indeterminate"]
-    http_status: int | None = None
-    body: object | None = None
-    error_category: str | None = None
+    http_status: Optional[int] = None
+    body: Optional[object] = None
+    error_category: Optional[str] = None
 
 
 class DispatchResult(FH2Response):

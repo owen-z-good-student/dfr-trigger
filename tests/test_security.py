@@ -1,5 +1,6 @@
 import base64
 import os
+from typing import Optional
 from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
 
@@ -21,8 +22,8 @@ from app.settings import Settings
 def make_request(
     settings: Settings,
     *,
-    headers: dict[str, str] | None = None,
-    client_host: str | None = "127.0.0.1",
+    headers: Optional[dict[str, str]] = None,
+    client_host: Optional[str] = "127.0.0.1",
 ) -> Request:
     app = FastAPI()
     app.state.settings = settings
@@ -230,7 +231,7 @@ def test_live_actor_requires_trusted_proxy_and_identity():
 )
 def test_live_actor_fails_closed(
     cidrs: str,
-    client_host: str | None,
+    client_host: Optional[str],
     headers: dict[str, str],
     status_code: int,
     detail: str,
