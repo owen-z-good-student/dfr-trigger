@@ -29,14 +29,14 @@
     <button class="nav-item is-active" data-module="dispatch" data-i18n-aria="nav.dispatch" aria-label="Open Dispatch panel">
       <i data-lucide="drone"></i><span data-i18n="nav.dispatch">Dispatch</span>
     </button>
+    <button class="nav-item" data-module="live" data-i18n-aria="nav.live" aria-label="Open Live panel">
+      <i data-lucide="video"></i><span data-i18n="nav.live">Live</span>
+    </button>
     <button class="nav-item" data-module="configuration" data-i18n-aria="nav.config" aria-label="Open Config panel">
       <i data-lucide="wrench"></i><span data-i18n="nav.config">Config</span>
     </button>
     <button class="nav-item" data-module="logs" data-i18n-aria="nav.logs" aria-label="Open Log panel">
       <i data-lucide="book-open"></i><span data-i18n="nav.logs">Log</span>
-    </button>
-    <button class="nav-item" data-module="live" data-i18n-aria="nav.live" aria-label="Open Live panel">
-      <i data-lucide="video"></i><span data-i18n="nav.live">Live</span>
     </button>
   </aside>
 
@@ -193,6 +193,15 @@
     </div>
   </template>
 
+  <template id="tpl-live">
+    <div class="panel-inner">
+      <h2 class="panel-title" data-i18n="live.title">Live</h2>
+      <div id="live-list" class="live-list">
+        <p class="log-record-meta" data-i18n="live.no_stream">No active livestream</p>
+      </div>
+    </div>
+  </template>
+
   <script src="/static/js/i18n.js?v=2"></script>
   <script src="/static/js/api.js?v=2"></script>
   <script src="/static/js/navigation.js?v=2"></script>
@@ -200,6 +209,7 @@
   <script src="/static/js/dispatch.js?v=2"></script>
   <script src="/static/js/configuration.js?v=2"></script>
   <script src="/static/js/logs.js?v=2"></script>
+  <script src="/static/js/live.js?v=2"></script>
   <script src="/static/js/main.js?v=2"></script>
 </body>
 </html>

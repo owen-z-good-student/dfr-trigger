@@ -79,6 +79,8 @@ class NavigationController {
         window.configurationController.attach();
       } else if (mod === "logs" && window.logsController) {
         window.logsController.attach();
+      } else if (mod === "live" && window.liveController) {
+        window.liveController.attach();
       }
       // Fade in
       panel.style.opacity = "1";
